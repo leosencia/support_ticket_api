@@ -23,6 +23,19 @@ class GraphqlController < ApplicationController
 
   private
 
+  def current_user_from_token
+    auth_header = request.headers["Authorization"]
+    return nil unless auth_header
+
+    token = auth_header.split(" ").last
+    return nil unless token
+
+    decoded = JsonWebToken.decode(token)
+    User.find_by(id: decoded[:user_id])
+  rescue GraphQL::ExecutionError
+    nil
+  end
+
   # Handle variables in form data, JSON body, or a blank value
   def prepare_variables(variables_param)
     case variables_param

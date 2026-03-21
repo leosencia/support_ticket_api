@@ -16,7 +16,7 @@ module Mutations
       user = User.new(email: email, password: password, password_confirmation: password_confirmation)
 
       if user.save
-        token = JsonWebToken.encode(user_id: user.id)
+        token = ::JsonWebToken.encode(user_id: user.id)
         {user: user, token: token, errors: []}
       else
         { user: nil, token: nil, errors: user.errors.full_messages}
