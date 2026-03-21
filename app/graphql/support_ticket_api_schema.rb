@@ -1,5 +1,14 @@
 # frozen_string_literal: true
 
+# Explicitly load mutations
+require_dependency "mutations/base_mutation"
+require_dependency "mutations/register"
+require_dependency "mutations/login"
+require_dependency "mutations/logout"
+require_dependency "mutations/create_ticket"
+require_dependency "mutations/update_ticket"
+require_dependency "mutations/delete_ticket"
+
 class SupportTicketApiSchema < GraphQL::Schema
   mutation(Types::MutationType)
   query(Types::QueryType)
