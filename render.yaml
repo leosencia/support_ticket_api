@@ -1,0 +1,25 @@
+# Render Blueprint — https://render.com/docs/blueprint-spec
+#
+# API-only Rails: do NOT run `rails` or `rake assets:precompile` in buildCommand
+# (bare `rails` uses Bundler’s .gems/bin stub and can raise Gem::GemNotFoundException for railties).
+#
+# If you already created the service in the dashboard, either:
+# - Apply this blueprint, or
+# - Set Build Command to: bundle install
+#   Set Start Command to: bundle exec puma -C config/puma.rb
+#   Set Pre-Deploy (optional): bundle exec rails db:migrate
+
+services:
+  - type: web
+    name: support-ticket-api
+    runtime: ruby
+    buildCommand: bundle install
+    preDeployCommand: bundle exec rails db:migrate
+    startCommand: bundle exec puma -C config/puma.rb
+    envVars:
+      - key: RAILS_ENV
+        value: production
+      - key: RAILS_LOG_TO_STDOUT
+        value: "true"
+      - key: RAILS_SERVE_STATIC_FILES
+        value: "true"
