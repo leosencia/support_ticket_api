@@ -3,19 +3,15 @@
 # API-only Rails: do NOT run `rails` or `rake assets:precompile` in buildCommand
 # (bare `rails` uses Bundler’s .gems/bin stub and can raise Gem::GemNotFoundException for railties).
 #
-# If you already created the service in the dashboard, either:
-# - Apply this blueprint, or
-# - Set Build Command to: bundle install
-#   Set Start Command to: bundle exec puma -C config/puma.rb
-#   Set Pre-Deploy (optional): bundle exec rails db:migrate
+# Free tier: Pre-Deploy is often unavailable — migrate in startCommand instead.
+# Dashboard: Build = bundle install | Start = same as startCommand below (or use this blueprint).
 
 services:
   - type: web
     name: support-ticket-api
     runtime: ruby
     buildCommand: bundle install
-    preDeployCommand: bundle exec rails db:migrate
-    startCommand: bundle exec puma -C config/puma.rb
+    startCommand: RAILS_ENV=production bundle exec rails db:migrate && bundle exec puma -C config/puma.rb
     envVars:
       - key: RAILS_ENV
         value: production

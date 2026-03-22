@@ -179,3 +179,13 @@ rails test
 ## Deployment
 
 This API is deployed at:
+
+### Render (production)
+
+- **Database:** `config/database.yml` uses `DATABASE_URL` for `primary`, `cache`, `queue`, and `cable` (single Render Postgres URL is fine for all four).
+- **Env (web service):** `DATABASE_URL` (Internal Database URL), `RAILS_MASTER_KEY`, `RAILS_ENV=production`.
+- **Build Command:** `bundle install` (or `./bin/render-build.sh`).
+- **Start Command (free tier, no pre-deploy):**  
+  `RAILS_ENV=production bundle exec rails db:migrate && bundle exec puma -C config/puma.rb`  
+  so migrations run at boot when `DATABASE_URL` is always present.
+- **Do not** run `db:migrate` in the build step unless `DATABASE_URL` is guaranteed to exist at build time.

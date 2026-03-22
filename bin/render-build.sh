@@ -1,14 +1,8 @@
 #!/usr/bin/env bash
-# Render / CI build for this API-only app.
+# Render build: install gems only. Do not run db:migrate here — DATABASE_URL may be
+# unavailable during build on free tier; run migrations in Start Command instead.
 #
-# Never run bare `rails` here — Bundler’s shim (~/.gems/bin/rails) can fail with:
-#   Gem::GemNotFoundException: can't find gem railties ... (executable rails)
-# Always use `bundle exec rails` or `./bin/rails` (project binstub loads config/boot).
-#
-# Migrations: use Render “Pre-Deploy Command” or `preDeployCommand` in render.yaml,
-# not the build phase. Seeds: run once via Render Shell (`bundle exec rails db:seed`).
+# Never invoke bare `rails` from PATH; use `bundle exec` or `./bin/rails`.
 set -o errexit
 
 bundle install
-bundle exec rails db:migrate
-bundle exec rails db:seed
