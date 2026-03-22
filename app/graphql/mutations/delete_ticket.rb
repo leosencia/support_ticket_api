@@ -15,7 +15,7 @@ module Mutations
       if current_user.admin?
         ticket.destroy
         {message: "Ticket sucessfully removed", errors: []}
-      elsif ticket.requester == current_user.id && ticket.open?
+      elsif ticket.requester == current_user && ticket.open?
         ticket.destroy
         {message: "Ticket succesfully cancelled", errors: []}
       else

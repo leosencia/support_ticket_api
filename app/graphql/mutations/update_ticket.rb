@@ -21,7 +21,7 @@ module Mutations
       if current_user.admin?
         ticket.update(args)
         {ticket: ticket, errors: ticket.errors.full_messages}
-      elsif ticket.requester == current_user.id && ticket.open? #users can only edit if ticket is still open
+      elsif ticket.requester == current_user && ticket.open? #users can only edit if ticket is still open
         # Users cannot change status so we exlude it from editing using slice()
         allowed = args.slice(:subject, :description, :category, :priority)
         ticket.update(allowed)
