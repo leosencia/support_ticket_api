@@ -7,7 +7,8 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins "http://localhost:5173"
+    origins "http://localhost:5173",
+            "https://support-ticket-frontend-e0sj.onrender.com"
 
     resource "*",
       headers: :any,
